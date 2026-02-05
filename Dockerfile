@@ -1,15 +1,12 @@
-# Use official Java 17 image
+# Use Java 17
 FROM eclipse-temurin:17-jdk-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper files
+# Copy Maven wrapper
 COPY pom.xml .
 COPY .mvn .mvn
 COPY mvnw .
-
-# 🔑 Give execute permission to mvnw
 RUN chmod +x mvnw
 
 # Download dependencies
@@ -21,8 +18,8 @@ COPY src src
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Expose port
+# Expose port (Render listens on this)
 EXPOSE 8080
 
-# Run the jar
-CMD ["java", "-jar", "target/*.jar"]
+# 🔑 IMPORTANT: use exact jar name
+CMD ["java", "-jar", "target/flashkart-0.0.1-SNAPSHOT.jar"]
